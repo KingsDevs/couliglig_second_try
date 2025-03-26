@@ -59,5 +59,6 @@ class CouligligBot:
         self.__left_motor.setVelocity(self.__left_motor_velocity)
 
         self.send_odom()
+        self.send_imu()
 
         
