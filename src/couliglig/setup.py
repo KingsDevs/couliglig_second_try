@@ -28,7 +28,8 @@ setup(
         'console_scripts': [
             'couliglig_bot = couliglig.couliglig_bot:main',
             'keyboard_controller = couliglig.keyboard_controller:main',
-            'odom_publisher = couliglig.odom_publisher:main'
+            'odom_publisher = couliglig.odom_publisher:main',
+            'imu_publisher = couliglig.imu_publisher:main',
         ],
     },
 )

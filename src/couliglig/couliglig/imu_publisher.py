@@ -3,7 +3,6 @@ from geometry_msgs.msg import Quaternion
 from std_msgs.msg import Float32MultiArray
 import rclpy
 from rclpy.node import Node
-from controller import Robot
 import math
 
 def euler_to_quaternion(roll, pitch, yaw):
@@ -45,7 +44,7 @@ class ImuPublisher(Node):
         imu_msg.orientation = euler_to_quaternion(self.__imu_data[0], self.__imu_data[1], self.__imu_data[2])
 
         self.__imu_pub.publish(imu_msg)
-
+        
 def main(args=None):
     rclpy.init(args=args)
     node = ImuPublisher()
