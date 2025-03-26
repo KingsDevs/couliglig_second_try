@@ -95,6 +95,7 @@ class OdomPublisher(Node):
         self.tf_broadcaster.sendTransform(t)
 
         self.get_logger().info(f'Published odom: {self.x}, {self.y}, {self.theta}')
+        self.get_logger().info(f'Published TF: {self.x}, {self.y}, {self.theta}')
 
 def main(args=None):
     rclpy.init(args=args)
