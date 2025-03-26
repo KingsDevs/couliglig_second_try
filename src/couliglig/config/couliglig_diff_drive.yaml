@@ -3,13 +3,14 @@ controller_manager:
     update_rate: 50
 
 diff_drive_controller:
-  type: diff_drive_controller/DiffDriveController
-  left_wheel_names: ["left_wheel"]
-  right_wheel_names: ["right_wheel"]
-  publish_rate: 50.0
-  base_frame_id: base_link
-  odom_frame_id: odom
-  wheel_separation: 0.324
-  wheel_radius: 0.05
-  use_stamped_vel: false
-  enable_odom_tf: true
+  ros__parameters:
+    type: diff_drive_controller/DiffDriveController
+    left_wheel_names: ["left_motor"]
+    right_wheel_names: ["right_motor"]
+    publish_rate: 50.0
+    base_frame_id: base_link
+    odom_frame_id: odom
+    wheel_separation: 0.324
+    wheel_radius: 0.05
+    enable_odom_tf: true
+    use_stamped_vel: false
