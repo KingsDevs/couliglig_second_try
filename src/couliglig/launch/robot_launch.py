@@ -64,15 +64,15 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        launch.actions.DeclareLaunchArgument(
+            name='use_sim_time', default_value='True',
+            description='Flag to enable use_sim_time'
+        ),
         webots,
         couliglig_bot,
         odom_publisher,
         imu_publisher,
         robot_localization_node,
-        launch.actions.DeclareLaunchArgument(
-            name='use_sim_time', default_value='True',
-            description='Flag to enable use_sim_time'
-        ),
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=webots,
