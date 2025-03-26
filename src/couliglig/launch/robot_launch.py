@@ -1,6 +1,7 @@
 import os
 import launch
 from launch import LaunchDescription
+from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 from webots_ros2_driver.webots_launcher import WebotsLauncher
 from webots_ros2_driver.webots_controller import WebotsController
@@ -30,6 +31,8 @@ def generate_launch_description():
     original_wbt_path = os.path.join(package_dir, 'worlds', 'couliglig_bot.wbt')
     fixed_wbt_path = replace_stl_path_in_wbt(original_wbt_path, package_name)
 
+    config_path = os.path.join(package_dir, 'config', 'couliglig_bot.yaml')
+
     webots = WebotsLauncher(
         world=fixed_wbt_path,
     )
@@ -44,6 +47,18 @@ def generate_launch_description():
     return LaunchDescription([
         webots,
         couliglig_bot,
+        Node(
+            package='controller_manager',
+            executable='ros2_control_node',
+            parameters=[{'robot_description': open(robot_description_path).read()}, config_path],
+            output='screen'
+        ),
+        Node(
+            package='controller_manager',
+            executable='spawner',
+            arguments=['diff_drive_controller'],
+            output='screen'
+        ),
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=webots,

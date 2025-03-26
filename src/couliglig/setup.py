@@ -9,6 +9,7 @@ data_files.append(('share/' + package_name + '/worlds', glob('worlds/*.wbt')))
 data_files.append(('share/' + package_name + '/worlds', ['worlds/Robec_24_25_Banner.png']))
 data_files.append(('share/' + package_name + '/worlds/stl_files', glob('worlds/stl_files/*.STL')))
 data_files.append(('share/' + package_name + '/resource', glob('resource/*.urdf')))
+data_files.append(('share/' + package_name + '/config', glob('config/*.yaml')))
 data_files.append(('share/' + package_name, ['package.xml']))
 
 setup(
