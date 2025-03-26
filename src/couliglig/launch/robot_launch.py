@@ -1,6 +1,7 @@
 import os
 import launch
 from launch import LaunchDescription
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 from webots_ros2_driver.webots_launcher import WebotsLauncher
@@ -31,8 +32,6 @@ def generate_launch_description():
     original_wbt_path = os.path.join(package_dir, 'worlds', 'couliglig_bot.wbt')
     fixed_wbt_path = replace_stl_path_in_wbt(original_wbt_path, package_name)
 
-    # config_path = os.path.join(package_dir, 'config', 'couliglig_diff_drive.yaml')
-
     webots = WebotsLauncher(
         world=fixed_wbt_path,
     )
@@ -44,30 +43,35 @@ def generate_launch_description():
         ]
     )
 
+    odom_publisher = Node(
+        package=package_name,
+        executable='odom_publisher',
+        output='screen'
+    )
+
+    imu_publisher = Node(
+        package=package_name,
+        executable='imu_publisher',
+        output='screen'
+    )
+
+    robot_localization_node = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_node',
+        output='screen',
+        parameters=[os.path.join(package_dir, 'config/ekf.yaml'), {'use_sim_time': LaunchConfiguration('use_sim_time')}]
+    )
+
     return LaunchDescription([
         webots,
         couliglig_bot,
-        # Node(
-        #     package='controller_manager',
-        #     executable='ros2_control_node',
-        #     parameters=[{'robot_description': open(robot_description_path).read()}, config_path],
-        #     output='screen'
-        # ),
-        # Node(
-        #     package='controller_manager',
-        #     executable='spawner',
-        #     arguments=['diff_drive_controller'],
-        #     output='screen'
-        # ),
-        Node(
-            package='couliglig',
-            executable='odom_publisher',
-            output='screen'
-        ),
-        Node(
-            package='couliglig',
-            executable='imu_publisher',
-            output='screen'
+        odom_publisher,
+        imu_publisher,
+        robot_localization_node,
+        launch.actions.DeclareLaunchArgument(
+            name='use_sim_time', default_value='True',
+            description='Flag to enable use_sim_time'
         ),
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
