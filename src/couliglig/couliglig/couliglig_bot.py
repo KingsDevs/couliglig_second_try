@@ -21,6 +21,12 @@ class CouligligBot:
         self.__left_motor_velocity = 0
         self.__right_motor_velocity = 0
 
+        self.__left_sensor = self.__robot.getDevice('left_motor_sensor')
+        self.__right_sensor = self.__robot.getDevice('right_motor_sensor')
+
+        self.__left_sensor.enable(self.__robot.getBasicTimeStep())
+        self.__right_sensor.enable(self.__robot.getBasicTimeStep())
+
         rclpy.init(args=None)
         self.__node = rclpy.create_node(NODE_NAME)
         self.__node.create_subscription(Float32MultiArray, TOPIC_NAME, self.__cmd_vel_callback, 1)
