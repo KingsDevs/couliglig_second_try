@@ -22,8 +22,8 @@ class CouligligBot:
         self.__left_motor_velocity = 0
         self.__right_motor_velocity = 0
 
-        self.__left_sensor = self.__robot.getDevice('left_motor_sensor')
-        self.__right_sensor = self.__robot.getDevice('right_motor_sensor')
+        self.__left_sensor = self.__robot.getDevice('left_position_sensor')
+        self.__right_sensor = self.__robot.getDevice('right_position_sensor')
 
         self.__left_sensor.enable(self.__timestep)
         self.__right_sensor.enable(self.__timestep)

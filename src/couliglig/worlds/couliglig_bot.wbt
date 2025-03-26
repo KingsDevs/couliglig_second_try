@@ -199,8 +199,8 @@ Robot {
                 }
               ]
               endPoint Solid {
-                translation -0.06399999999811251 0.11999999999999908 1.9577163996384673e-12
-                rotation 0.6491111081143969 -1.006170833413418e-06 0.7606936106748156 3.141590923817615
+                translation -0.06399999999811251 0.11999999999999908 1.957716399638228e-12
+                rotation 0.6491111081143969 -1.0061708334136258e-06 0.7606936106748156 3.141590923817615
                 children [
                   Shape {
                     appearance PBRAppearance {
@@ -239,14 +239,14 @@ Robot {
               }
               device [
                 PositionSensor {
-                  name "left_position_motor"
+                  name "left_position_sensor"
                 }
                 RotationalMotor {
                   name "left_motor"
                 }
               ]
               endPoint Solid {
-                translation -0.06400000000102032 -0.12000000000000036 -1.2085065350879307e-12
+                translation -0.06400000000102032 -0.12000000000000036 -1.2085064550364316e-12
                 rotation 1.4317893501016411e-16 1 -1.5109997892182274e-16 4.007911469452456
                 children [
                   Shape {
