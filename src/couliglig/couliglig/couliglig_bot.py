@@ -6,7 +6,7 @@ NODE_NAME = 'couliglig_bot_driver'
 TOPIC_NAME = 'drive_cmd'
 
 class CouligligBot:
-    def init(self, webots_node, properties):
+    def __init__(self, webots_node, properties):
         self.__robot: Robot = webots_node.robot
 
         self.__left_motor = self.__robot.getDevice('left_motor')
