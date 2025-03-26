@@ -1,6 +1,7 @@
 import math
 import rclpy
 from rclpy.node import Node
+from std_msgs.msg import Float32MultiArray
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Quaternion, TransformStamped
 from tf2_ros import TransformBroadcaster
@@ -18,7 +19,6 @@ class OdomPublisher(Node):
         self.odom_pub = self.create_publisher(Odometry, 'odom', 10)
         self.tf_broadcaster = TransformBroadcaster(self)
 
-        # Robot geometry (adjust for your robot)
         self.wheel_radius = 0.05
         self.wheel_separation = 0.324
 
@@ -30,18 +30,23 @@ class OdomPublisher(Node):
         # Track last encoder readings
         self.left_encoder_old = 0.0
         self.right_encoder_old = 0.0
+        self.left_encoder_new = 0.0
+        self.right_encoder_new = 0.0
 
         # Timer to publish at e.g. 50 Hz
         self.timer_period = 0.02  # 50 Hz
         self.timer = self.create_timer(self.timer_period, self.update_odom)
 
-    def update_odom(self):
-        # 1) Read current encoder values from somewhere
-        # left_encoder = get_current_left_encoder()   # You must implement or integrate
-        # right_encoder = get_current_right_encoder() # e.g., read from Webots
+        self.encoder_sub = self.create_subscription(Float32MultiArray, 'wheel_pos', self.encoder_callback, 10)
 
-        left_encoder = 0.0
-        right_encoder = 0.0
+    def encoder_callback(self, msg):
+        self.left_encoder_new = msg.data[0]
+        self.right_encoder_new = msg.data[1]
+
+    def update_odom(self):
+
+        left_encoder = self.left_encoder_new
+        right_encoder = self.right_encoder_new
 
         # 2) Compute deltas
         delta_left = left_encoder - self.left_encoder_old
