@@ -64,6 +64,11 @@ def generate_launch_description():
             executable='odom_publisher',
             output='screen'
         ),
+        Node(
+            package='couliglig',
+            executable='imu_publisher',
+            output='screen'
+        ),
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=webots,
