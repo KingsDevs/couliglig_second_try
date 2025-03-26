@@ -166,7 +166,23 @@
 
     <device name="left_motor" type="RotationalMotor" />
     <device name="right_motor" type="RotationalMotor" />
+    <device name="left_position_sensor" type="PositionSensor" />
+    <device name="right_position_sensor" type="PositionSensor" />
 
     <plugin type="couliglig.couliglig_bot.CouligligBot"/>
   </webots>
+
+  <ros2_control name="CouligligBotHardware" type="system">
+    <hardware>
+      <plugin>webots_ros2_control/WebotsSystem</plugin>
+    </hardware>
+    <joint name="left_motor">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+    </joint>
+    <joint name="right_motor">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+    </joint>
+  </ros2_control>
 </robot>
