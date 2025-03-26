@@ -6,7 +6,7 @@ NODE_NAME = 'couliglig_bot_driver'
 TOPIC_NAME = 'drive_cmd'
 
 class CouligligBot:
-    def __init__(self, webots_node, properties):
+    def init(self, webots_node, properties):
         self.__robot: Robot = webots_node.robot
         self.__timestep = int(self.__robot.getBasicTimeStep())
 
@@ -48,6 +48,6 @@ class CouligligBot:
         motor_sensors_msg.data = [self.__left_sensor.getValue(), self.__right_sensor.getValue()]
         self.__motor_sensors_pub.publish(motor_sensors_msg)
 
-        return self.__robot.step(self.__timestep)
+        # return self.__robot.step(self.__timestep)
 
         
