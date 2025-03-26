@@ -8,6 +8,7 @@ TOPIC_NAME = 'drive_cmd'
 class CouligligBot:
     def __init__(self, webots_node, properties):
         self.__robot: Robot = webots_node.robot
+        self.__timestep = int(self.__robot.getBasicTimeStep())
 
         self.__left_motor = self.__robot.getDevice('left_motor')
         self.__right_motor = self.__robot.getDevice('right_motor')
@@ -24,8 +25,8 @@ class CouligligBot:
         self.__left_sensor = self.__robot.getDevice('left_motor_sensor')
         self.__right_sensor = self.__robot.getDevice('right_motor_sensor')
 
-        self.__left_sensor.enable(self.__robot.getBasicTimeStep())
-        self.__right_sensor.enable(self.__robot.getBasicTimeStep())
+        self.__left_sensor.enable(self.__timestep)
+        self.__right_sensor.enable(self.__timestep)
 
         rclpy.init(args=None)
         self.__node = rclpy.create_node(NODE_NAME)
@@ -40,5 +41,7 @@ class CouligligBot:
 
         self.__right_motor.setVelocity(self.__right_motor_velocity)
         self.__left_motor.setVelocity(self.__left_motor_velocity)
+
+        return self.__robot.step(self.__timestep)
 
         
