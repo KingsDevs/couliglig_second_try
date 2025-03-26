@@ -32,7 +32,7 @@ class CouligligBot:
         self.__node = rclpy.create_node(NODE_NAME)
         self.__node.create_subscription(Float32MultiArray, TOPIC_NAME, self.__cmd_vel_callback, 1)
 
-        self.__motor_sensors_pub = self.__node.create_publisher(Float32MultiArray, 'wheel_pos', 1)
+        self.__motor_sensors_pub = self.__node.create_publisher(Float32MultiArray, 'wheel_pos', 10)
 
     def __cmd_vel_callback(self, msg):
         self.__left_motor_velocity = msg.data[0]
