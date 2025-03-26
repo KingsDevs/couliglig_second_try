@@ -1,0 +1,172 @@
+<?xml version="1.0" ?>
+<robot name="couliglig_bot">
+  <link name="base_link"/>
+
+  <link name="solid">
+    <visual>
+      <origin xyz="-0.013 0 0.117" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.3 0.25 0.3"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.013 0 0.117" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.3 0.25 0.3"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="base_link_solid_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="solid"/>
+    <origin xyz="0 0 -0.010392" rpy="0 -0.000002 0"/>
+  </joint>
+
+  <joint name="left_motor" type="continuous">
+    <parent link="solid"/>
+    <child link="solid_0"/>
+    <axis xyz="0 -1 0"/>
+    <limit effort="10" velocity="10"/>
+    <origin xyz="-0.0652 -0.1493 -0.0343" rpy="-3.141593 -0.866319 3.141593"/>
+  </joint>
+
+  <link name="solid_0">
+    <visual>
+      <origin xyz="0 0.002 0" rpy="-1.570795 0 0"/>
+      <geometry>
+        <cylinder radius="0.05" length="0.04"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0.002 0" rpy="-1.570795 0 0"/>
+      <geometry>
+        <cylinder radius="0.05" length="0.04"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="right_motor" type="continuous">
+    <parent link="solid"/>
+    <child link="solid(1)"/>
+    <axis xyz="0 1 0.000003"/>
+    <limit effort="10" velocity="10"/>
+    <origin xyz="-0.0652 0.1747 -0.0343" rpy="-0.000003 -1.412831 3.141593"/>
+  </joint>
+
+  <link name="solid(1)">
+    <visual>
+      <origin xyz="0 -0.004 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.05" length="0.04"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 -0.004 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.05" length="0.04"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="solid(2)">
+  </link>
+
+  <joint name="solid_solid(2)_joint" type="fixed">
+    <parent link="solid"/>
+    <child link="solid(2)"/>
+    <origin xyz="0.115 0.024 -0.034" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="hingejoint" type="continuous">
+    <parent link="solid(2)"/>
+    <child link="solid_1"/>
+    <axis xyz="0 0 -1"/>
+    <origin xyz="0 0 -0.002" rpy="0 0 0.135973"/>
+  </joint>
+
+  <link name="solid_1">
+    <visual>
+      <origin xyz="0.013 0.008 -0.017" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.0028 0.02 0.03"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.013 0.008 -0.017" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.0028 0.02 0.03"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="hingejoint_2" type="continuous">
+    <parent link="solid_1"/>
+    <child link="solid_3"/>
+    <axis xyz="-0.000004 -1 0"/>
+    <origin xyz="0 0.0132 -0.028" rpy="0.000001 0.320282 1.5708"/>
+  </joint>
+
+  <link name="solid_3">
+    <visual>
+      <origin xyz="0 0.0014 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.016" length="0.018"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0.0014 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.016" length="0.018"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="base_link">
+  </link>
+  
+  <link name="lidar">
+  </link>
+  
+  <joint name="solid_lidar_joint" type="fixed">
+    <parent link="solid"/>
+    <child link="lidar"/>
+    <origin xyz="-0.15 -0.0086 0.18" rpy="0 0 3.141593"/>
+  </joint>
+  
+  <link name="inertial unit">
+  </link>
+  
+  <joint name="solid_inertial unit_joint" type="fixed">
+    <parent link="solid"/>
+    <child link="inertial unit"/>
+    <origin xyz="-0.15 0 0.18" rpy="0 0 0"/>
+  </joint>
+
+  <webots>
+    <device name="lidar" type="Lidar">
+      <ros>
+        <enabled>true</enabled>
+        <updateRate>50</updateRate>
+        <topicName>/scan</topicName>
+        <alwaysOn>true</alwaysOn>
+        <frameName>lidar</frameName>
+      </ros>
+    </device>
+
+    <device name="inertial unit" type="InertialUnit">
+      <ros>
+        <enabled>true</enabled>
+        <updateRate>50</updateRate>
+        <topicName>/imu</topicName>
+        <alwaysOn>true</alwaysOn>
+        <frameName>inertial unit</frameName>
+      </ros>
+    </device>
+
+    <device name="left_motor" type="RotationalMotor" />
+    <device name="right_motor" type="RotationalMotor" />
+
+    <plugin type="couliglig.couliglig_bot.CouligligBot"/>
+  </webots>
+</robot>
