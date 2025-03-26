@@ -39,6 +39,8 @@ class OdomPublisher(Node):
 
         self.encoder_sub = self.create_subscription(Float32MultiArray, 'wheel_pos', self.encoder_callback, 10)
 
+        self.get_logger().info("Odom publisher started")
+
     def encoder_callback(self, msg):
         self.left_encoder_new = msg.data[0]
         self.right_encoder_new = msg.data[1]

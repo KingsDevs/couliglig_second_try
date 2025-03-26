@@ -59,6 +59,11 @@ def generate_launch_description():
         #     arguments=['diff_drive_controller'],
         #     output='screen'
         # ),
+        Node(
+            package='couliglig',
+            executable='odom_publisher',
+            output='screen'
+        ),
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=webots,
