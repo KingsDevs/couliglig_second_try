@@ -58,12 +58,12 @@ def generate_launch_description():
     )
 
 
-    baselink_to_odom = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'odom'],
-        parameters=[{'use_sim_time': use_sim_time}]
-    )
+    # baselink_to_odom = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'odom'],
+    #     parameters=[{'use_sim_time': use_sim_time}]
+    # )
 
     basel_link_to_lidar = Node(
         package='tf2_ros',
@@ -92,7 +92,7 @@ def generate_launch_description():
         couliglig_bot,
         # odom_publisher,
         # imu_publisher,
-        baselink_to_odom,
+        # baselink_to_odom,
         basel_link_to_lidar,
         joint_state_publisher,
         # joint_state_publisher_gui,
