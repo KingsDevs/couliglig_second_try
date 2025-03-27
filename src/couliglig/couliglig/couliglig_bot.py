@@ -72,7 +72,7 @@ class CouligligBot:
 
         self.__odom_pub = self.__node.create_publisher(Odometry, 'odom', 10)
         self.__imu_pub = self.__node.create_publisher(Imu, 'imu/data', 10)
-        self.__lidar_pub = self.__node.create_publisher(LaserScan, 'scan', 10)
+        # self.__lidar_pub = self.__node.create_publisher(LaserScan, 'scan', 10)
 
     def __cmd_vel_callback(self, msg):
         self.__left_motor_velocity = msg.data[0]
@@ -139,25 +139,25 @@ class CouligligBot:
 
         self.__imu_pub.publish(imu_msg)
 
-    def send_laserscan(self):
-        msg = LaserScan()
-        msg.header.stamp = self.__node.get_clock().now().to_msg()
-        msg.header.frame_id = 'lidar'
+    # def send_laserscan(self):
+    #     msg = LaserScan()
+    #     msg.header.stamp = self.__node.get_clock().now().to_msg()
+    #     msg.header.frame_id = 'lidar'
 
-        resolution = self.__lidar.getHorizontalResolution()
-        fov = self.__lidar.getFov()
-        max_range = self.__lidar.getMaxRange()
-        min_range = 0.1
+    #     resolution = self.__lidar.getHorizontalResolution()
+    #     fov = self.__lidar.getFov()
+    #     max_range = self.__lidar.getMaxRange()
+    #     min_range = 0.1
 
-        msg.angle_min = -fov / 2.0
-        msg.angle_max = fov / 2.0
-        msg.angle_increment = fov / resolution
-        msg.range_min = min_range
-        msg.range_max = max_range
-        msg.scan_time = self.__timestep / 1000.0
+    #     msg.angle_min = -fov / 2.0
+    #     msg.angle_max = fov / 2.0
+    #     msg.angle_increment = fov / resolution
+    #     msg.range_min = min_range
+    #     msg.range_max = max_range
+    #     msg.scan_time = self.__timestep / 1000.0
 
-        msg.ranges = list(self.__lidar.getRangeImage())
-        self.__lidar_pub.publish(msg)
+    #     msg.ranges = list(self.__lidar.getRangeImage())
+    #     self.__lidar_pub.publish(msg)
 
         
     def step(self):
@@ -168,6 +168,6 @@ class CouligligBot:
 
         self.send_odom()
         self.send_imu()
-        self.send_laserscan()
+        # self.send_laserscan()
 
         
