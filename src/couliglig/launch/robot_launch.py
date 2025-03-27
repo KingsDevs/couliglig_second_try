@@ -68,7 +68,7 @@ def generate_launch_description():
     base_link_to_lidar = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
-        arguments=['-0.15', '0', '0.18', '0', '0', '3.14', 'base_link', 'lidar'],
+        arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'lidar'],
         parameters=[{'use_sim_time': use_sim_time}]
     )
 
@@ -94,7 +94,7 @@ def generate_launch_description():
         # imu_publisher,
         odom_to_baselink,
         base_link_to_lidar,
-        joint_state_publisher,
+        # joint_state_publisher,
         # joint_state_publisher_gui,
         robot_localization_node,
         launch.actions.RegisterEventHandler(
