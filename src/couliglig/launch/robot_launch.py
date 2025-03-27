@@ -32,6 +32,8 @@ def generate_launch_description():
     original_wbt_path = os.path.join(package_dir, 'worlds', 'couliglig_bot.wbt')
     fixed_wbt_path = replace_stl_path_in_wbt(original_wbt_path, package_name)
 
+    use_sim_time = LaunchConfiguration('use_sim_time', default=True)
+
     webots = WebotsLauncher(
         world=fixed_wbt_path,
     )
@@ -56,12 +58,18 @@ def generate_launch_description():
     )
 
 
-    static_tf = Node(
+    baselink_to_odom = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
-        name='static_tf_pub',
-        output='log',
-        arguments=['0', '0', '0', '0', '0', '0', 'odom', 'base_link']
+        arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'odom'],
+        parameters=[{'use_sim_time': use_sim_time}]
+    )
+
+    basel_link_to_lidar = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'lidar'],
+        parameters=[{'use_sim_time': use_sim_time}]
     )
 
     joint_state_publisher = Node(
@@ -76,19 +84,16 @@ def generate_launch_description():
         executable='ekf_node',
         name='ekf_node',
         output='screen',
-        parameters=[os.path.join(package_dir, 'config/ekf.yaml'), {'use_sim_time': LaunchConfiguration('use_sim_time')}]
+        parameters=[os.path.join(package_dir, 'config/ekf.yaml'), {'use_sim_time': use_sim_time}]
     )
 
     return LaunchDescription([
-        launch.actions.DeclareLaunchArgument(
-            name='use_sim_time', default_value='True',
-            description='Flag to enable use_sim_time'
-        ),
         webots,
         couliglig_bot,
         # odom_publisher,
         # imu_publisher,
-        static_tf,
+        baselink_to_odom,
+        basel_link_to_lidar,
         joint_state_publisher,
         # joint_state_publisher_gui,
         robot_localization_node,
