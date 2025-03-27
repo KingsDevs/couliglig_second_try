@@ -13,8 +13,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.3696880604475609 0.019635628407882286 0.9289484270181786 3.0429921967836338
-  position 6.0524819164172605 -0.2612014842257283 5.820337541739868
+  orientation -0.3604457437888445 0.004709197076814264 0.9327682934402296 3.1172207620353025
+  position 6.114544725379389 0.2483432309628586 5.702712377538046
 }
 TexturedBackground {
 }
@@ -374,6 +374,14 @@ FifaSoccerBall {
 }
 TrafficCone {
   translation 1.49 1.64 0
+}
+TrafficCone {
+  translation -0.33 -1.36 0
+  name "traffic cone(1)"
+}
+TrafficCone {
+  translation -0.75 1.1 0
+  name "traffic cone(2)"
 }
 WaterBottle {
   translation 1.02 -0.52 0
