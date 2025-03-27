@@ -64,6 +64,13 @@ def generate_launch_description():
         arguments=['0', '0', '0', '0', '0', '0', 'odom', 'base_link']
     )
 
+    joint_state_publisher = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher',
+        output='screen'
+    )
+
     robot_localization_node = Node(
         package='robot_localization',
         executable='ekf_node',
@@ -82,6 +89,8 @@ def generate_launch_description():
         odom_publisher,
         imu_publisher,
         static_tf,
+        joint_state_publisher,
+        # joint_state_publisher_gui,
         robot_localization_node,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(

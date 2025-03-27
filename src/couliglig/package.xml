@@ -20,6 +20,9 @@
   <depend>controller_manager</depend>
   <depend>diff_drive_controller</depend>
   <depend>tf2_ros</depend>
+  <depend>joint_state_publisher</depend>
+  <depend>joint_state_publisher_gui</depend>
+  <depend>robot_state_publisher</depend>
 
   <exec_depend>robot_localization</exec_depend>
 
