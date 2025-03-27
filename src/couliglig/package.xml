@@ -19,6 +19,7 @@
   <depend>ros2_control</depend>
   <depend>controller_manager</depend>
   <depend>diff_drive_controller</depend>
+  <depend>tf2_ros</depend>
 
   <exec_depend>robot_localization</exec_depend>
 

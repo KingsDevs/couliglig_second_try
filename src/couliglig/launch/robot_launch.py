@@ -55,6 +55,15 @@ def generate_launch_description():
         output='screen'
     )
 
+
+    static_tf = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='static_tf_pub',
+        output='log',
+        arguments=['0', '0', '0', '0', '0', '0', 'odom', 'base_link']
+    )
+
     robot_localization_node = Node(
         package='robot_localization',
         executable='ekf_node',
@@ -72,6 +81,7 @@ def generate_launch_description():
         couliglig_bot,
         odom_publisher,
         imu_publisher,
+        static_tf,
         robot_localization_node,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
