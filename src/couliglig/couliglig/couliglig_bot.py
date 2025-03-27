@@ -10,6 +10,9 @@ from controller import Robot, PositionSensor, InertialUnit, Lidar, Motor
 NODE_NAME = 'couliglig_bot_driver'
 TOPIC_NAME = 'drive_cmd'
 
+WHEEL_RADIUS = 0.05
+WHEEL_SEPARATION = 0.324
+
 def euler_to_quaternion(roll, pitch, yaw):
     cy = math.cos(yaw * 0.5)
     sy = math.sin(yaw * 0.5)
@@ -48,6 +51,13 @@ class CouligligBot:
         self.__left_sensor.enable(self.__timestep)
         self.__right_sensor.enable(self.__timestep)
 
+        self.__x = 0.0
+        self.__y = 0.0
+        self.__theta = 0.0
+
+        self.__left_encoder_old = 0.0
+        self.__right_encoder_old = 0.0
+
         self.__imu: InertialUnit = self.__robot.getDevice('inertial unit')
         self.__imu.enable(self.__timestep)
 
@@ -60,8 +70,8 @@ class CouligligBot:
 
         self.__tf_broadcaster = TransformBroadcaster(self.__node)
 
-        self.__odom_pub = self.__node.create_publisher(Float32MultiArray, 'odom', 10)
-        self.__imu_pub = self.__node.create_publisher(Float32MultiArray, 'imu/data', 10)
+        self.__odom_pub = self.__node.create_publisher(Odometry, 'odom', 10)
+        self.__imu_pub = self.__node.create_publisher(Imu, 'imu/data', 10)
         self.__lidar_pub = self.__node.create_publisher(LaserScan, 'scan', 10)
 
     def __cmd_vel_callback(self, msg):
@@ -73,32 +83,32 @@ class CouligligBot:
         right_encoder = self.__right_sensor.getValue()
 
         # 2) Compute deltas
-        delta_left = left_encoder - self.left_encoder_old
-        delta_right = right_encoder - self.right_encoder_old
-        self.left_encoder_old = left_encoder
-        self.right_encoder_old = right_encoder
+        delta_left = left_encoder - self.__left_encoder_old
+        delta_right = right_encoder - self.__right_encoder_old
+        self.__left_encoder_old = left_encoder
+        self.__right_encoder_old = right_encoder
 
         # 3) Convert to linear distance
-        d_left = delta_left * self.wheel_radius
-        d_right = delta_right * self.wheel_radius
+        d_left = delta_left * WHEEL_RADIUS
+        d_right = delta_right * WHEEL_RADIUS
         d_center = (d_left + d_right) / 2.0
-        d_theta = (d_right - d_left) / self.wheel_separation
+        d_theta = (d_right - d_left) / WHEEL_SEPARATION
 
         # 4) Integrate to get (x, y, theta)
-        self.x += d_center * math.cos(self.theta)
-        self.y += d_center * math.sin(self.theta)
-        self.theta += d_theta
+        self.__x += d_center * math.cos(self.__theta)
+        self.__y += d_center * math.sin(self.__theta)
+        self.__theta += d_theta
 
         # 5) Publish nav_msgs/Odometry
         odom_msg = Odometry()
-        odom_msg.header.stamp = self.get_clock().now().to_msg()
+        odom_msg.header.stamp = self.__node.get_clock().now().to_msg()
         odom_msg.header.frame_id = "odom"
         odom_msg.child_frame_id = "base_link"
-        odom_msg.pose.pose.position.x = self.x
-        odom_msg.pose.pose.position.y = self.y
+        odom_msg.pose.pose.position.x = self.__x
+        odom_msg.pose.pose.position.y = self.__y
 
         # Convert theta to quaternion
-        q = euler_to_quaternion(0.0, 0.0, self.theta)
+        q = euler_to_quaternion(0.0, 0.0, self.__theta)
         odom_msg.pose.pose.orientation = q
 
         # Optionally fill twist if you want velocity info
@@ -112,8 +122,8 @@ class CouligligBot:
         t.header.stamp = odom_msg.header.stamp
         t.header.frame_id = "odom"
         t.child_frame_id = "base_link"
-        t.transform.translation.x = self.x
-        t.transform.translation.y = self.y
+        t.transform.translation.x = self.__x
+        t.transform.translation.y = self.__y
         t.transform.translation.z = 0.0
         t.transform.rotation = q
         self.__tf_broadcaster.sendTransform(t)
@@ -122,7 +132,7 @@ class CouligligBot:
         imu_data = self.__imu.getRollPitchYaw()
 
         imu_msg = Imu()
-        imu_msg.header.stamp = self.get_clock().now().to_msg()
+        imu_msg.header.stamp = self.__node.get_clock().now().to_msg()
         imu_msg.header.frame_id = 'imu_link'
 
         imu_msg.orientation = euler_to_quaternion(imu_data[0], imu_data[1], imu_data[2])
