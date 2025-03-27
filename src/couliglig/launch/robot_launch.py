@@ -1,7 +1,7 @@
 import os
 import launch
 from launch import LaunchDescription
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 from webots_ros2_driver.webots_launcher import WebotsLauncher
@@ -92,11 +92,11 @@ def generate_launch_description():
         couliglig_bot,
         # odom_publisher,
         # imu_publisher,
-        odom_to_baselink,
+        # odom_to_baselink,
         base_link_to_lidar,
         # joint_state_publisher,
         # joint_state_publisher_gui,
-        robot_localization_node,
+        # robot_localization_node,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=webots,
