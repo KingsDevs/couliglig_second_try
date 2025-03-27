@@ -13,8 +13,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.3604457437888445 0.004709197076814264 0.9327682934402296 3.1172207620353025
-  position 6.114544725379389 0.2483432309628586 5.702712377538046
+  orientation -0.25915005156240284 0.10897602516617626 0.9596694622182081 2.374460339857002
+  position 6.249804375023922 -5.711643314692152 5.619480827223726
 }
 TexturedBackground {
 }
@@ -37,9 +37,9 @@ Robot {
         Lidar {
           translation -0.15 0 0.18
           rotation 0 0 1 3.141592653589793
+          horizontalResolution 360
           fieldOfView 1.57
-          verticalFieldOfView 0.6
-          numberOfLayers 6
+          numberOfLayers 1
         }
         JetsonNano {
           translation -0.01 0.01 0.16
