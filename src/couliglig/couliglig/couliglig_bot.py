@@ -61,7 +61,7 @@ class CouligligBot:
         self.__imu: InertialUnit = self.__robot.getDevice('inertial unit')
         self.__imu.enable(self.__timestep)
 
-        self.__lidar: Lidar = self.__robot.getDevice('lidar')
+        self.__lidar: Lidar = self.__robot.getDevice('LDS-01')
         self.__lidar.enable(self.__timestep)
 
         rclpy.init(args=None)
@@ -144,25 +144,25 @@ class CouligligBot:
 
         self.__imu_pub.publish(imu_msg)
 
-    # def send_laserscan(self):
-    #     msg = LaserScan()
-    #     msg.header.stamp = self.__node.get_clock().now().to_msg()
-    #     msg.header.frame_id = 'lidar'
+    def send_laserscan(self):
+        msg = LaserScan()
+        msg.header.stamp = self.__node.get_clock().now().to_msg()
+        msg.header.frame_id = 'LDS-01'
 
-    #     resolution = self.__lidar.getHorizontalResolution()
-    #     fov = self.__lidar.getFov()
-    #     max_range = self.__lidar.getMaxRange()
-    #     min_range = 0.1
+        resolution = self.__lidar.getHorizontalResolution()
+        fov = self.__lidar.getFov()
+        max_range = self.__lidar.getMaxRange()
+        min_range = 0.1
 
-    #     msg.angle_min = -fov / 2.0
-    #     msg.angle_max = fov / 2.0
-    #     msg.angle_increment = fov / resolution
-    #     msg.range_min = min_range
-    #     msg.range_max = max_range
-    #     msg.scan_time = self.__timestep / 1000.0
+        msg.angle_min = -fov / 2.0
+        msg.angle_max = fov / 2.0
+        msg.angle_increment = fov / resolution
+        msg.range_min = min_range
+        msg.range_max = max_range
+        msg.scan_time = self.__timestep / 1000.0
 
-    #     msg.ranges = list(self.__lidar.getRangeImage())
-    #     self.__lidar_pub.publish(msg)
+        msg.ranges = list(self.__lidar.getRangeImage())
+        self.__lidar_pub.publish(msg)
 
         
     def step(self):
