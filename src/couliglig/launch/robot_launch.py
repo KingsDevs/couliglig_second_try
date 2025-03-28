@@ -73,10 +73,10 @@ def generate_launch_description():
         parameters=[{'use_sim_time': use_sim_time}]
     )
 
-    base_footprint_to_base_link = Node(
+    base_link_to_base_footprint = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
-        arguments=['0', '0', '0.18', '0', '0', '0', 'base_footprint', 'base_link'],
+        arguments=['0', '0', '0.18', '0', '0', '0', 'base_link', 'base_footprint'],
         parameters=[{'use_sim_time': use_sim_time}]
     )
 
@@ -114,7 +114,7 @@ def generate_launch_description():
         # imu_publisher,
         # odom_to_baselink,
         base_link_to_lidar,
-        base_footprint_to_base_link,
+        base_link_to_base_footprint,
         # joint_state_publisher,
         # joint_state_publisher_gui,
         # robot_state_publisher,
