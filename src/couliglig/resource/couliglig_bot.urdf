@@ -17,7 +17,7 @@
 
   <!-- Webots-specific extension for ROS 2 integration -->
   <webots>
-    <!-- <device reference="LDS-01" type="Lidar">
+    <device reference="LDS-01" type="Lidar">
       <ros>
         <enabled>true</enabled>
         <updateRate>50</updateRate>
@@ -26,7 +26,7 @@
         <frameName>LDS-01</frameName>
         <useSimTime>true</useSimTime>
       </ros>
-    </device> -->
+    </device>
 
     <plugin type="couliglig.couliglig_bot.CouligligBot"/>
   </webots>
