@@ -2,6 +2,7 @@ import os
 import launch
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration, Command
+from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 from webots_ros2_driver.webots_launcher import WebotsLauncher
@@ -68,7 +69,7 @@ def generate_launch_description():
     base_link_to_lidar = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
-        arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'LDS-01'],
+        arguments=['0', '0', '0.18', '0', '0', '0', 'base_link', 'LDS-01'],
         parameters=[{'use_sim_time': use_sim_time}]
     )
 
@@ -77,6 +78,18 @@ def generate_launch_description():
         executable='joint_state_publisher',
         name='joint_state_publisher',
         output='screen'
+    )
+
+    robot_state_publisher = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        parameters=[{
+            'robot_description': ParameterValue(
+                Command(['xacro ', robot_description_path]),
+                value_type=str
+            ),
+            'use_sim_time': use_sim_time
+        }]
     )
 
     robot_localization_node = Node(
@@ -93,9 +106,10 @@ def generate_launch_description():
         # odom_publisher,
         # imu_publisher,
         # odom_to_baselink,
-        base_link_to_lidar,
+        # base_link_to_lidar,
         # joint_state_publisher,
         # joint_state_publisher_gui,
+        robot_state_publisher,
         robot_localization_node,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
