@@ -61,8 +61,8 @@ class CouligligBot:
         self.__imu: InertialUnit = self.__robot.getDevice('inertial unit')
         self.__imu.enable(self.__timestep)
 
-        self.__lidar: Lidar = self.__robot.getDevice('lidar')
-        self.__lidar.enable(self.__timestep)
+        # self.__lidar: Lidar = self.__robot.getDevice('lidar')
+        # self.__lidar.enable(self.__timestep)
 
         rclpy.init(args=None)
         self.__node = rclpy.create_node(NODE_NAME)
