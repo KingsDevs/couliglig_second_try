@@ -2,13 +2,12 @@ import rclpy
 import math
 from std_msgs.msg import Float32MultiArray
 from sensor_msgs.msg import LaserScan, Imu
-from geometry_msgs.msg import Quaternion, TransformStamped
+from geometry_msgs.msg import Quaternion, TransformStamped, Twist
 from nav_msgs.msg import Odometry
 from tf2_ros import TransformBroadcaster
 from controller import Robot, PositionSensor, InertialUnit, Lidar, Motor
 
 NODE_NAME = 'couliglig_bot_driver'
-TOPIC_NAME = 'drive_cmd'
 
 WHEEL_RADIUS = 0.05
 WHEEL_SEPARATION = 0.324
@@ -66,7 +65,8 @@ class CouligligBot:
 
         rclpy.init(args=None)
         self.__node = rclpy.create_node(NODE_NAME)
-        self.__node.create_subscription(Float32MultiArray, TOPIC_NAME, self.__cmd_vel_callback, 1)
+        self.__node.create_subscription(Float32MultiArray, 'drive_cmd', self.__keyboard_control, 1)
+        self.__node.create_subscription(Twist, 'cmd_vel', self.__cmd_vel_callback, 1)
 
         self.__tf_broadcaster = TransformBroadcaster(self.__node)
 
@@ -79,9 +79,16 @@ class CouligligBot:
         # self.__timer_lidar = self.__node.create_timer(self.__timer_period, self.send_laserscan)
         # self.__timer_imu = self.__node.create_timer(self.__timer_period, self.send_imu)
 
-    def __cmd_vel_callback(self, msg):
+    def __keyboard_control(self, msg):
         self.__left_motor_velocity = msg.data[0]
         self.__right_motor_velocity = msg.data[1]
+
+    def __cmd_vel_callback(self, msg):
+        forward_speed = msg.linear.x
+        angular_speed = msg.angular.z
+
+        self.__left_motor_velocity = (forward_speed - angular_speed * WHEEL_SEPARATION) / 2.0
+        self.__right_motor_velocity = (forward_speed + angular_speed * WHEEL_SEPARATION) / 2.0
 
     def send_odom(self):
         left_encoder = self.__left_sensor.getValue()
