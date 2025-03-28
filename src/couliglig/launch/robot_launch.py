@@ -117,7 +117,7 @@ def generate_launch_description():
         base_footprint_to_base_link,
         # joint_state_publisher,
         # joint_state_publisher_gui,
-        robot_state_publisher,
+        # robot_state_publisher,
         robot_localization_node,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
