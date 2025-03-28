@@ -8,6 +8,7 @@
         <topicName>/scan</topicName>
         <alwaysOn>true</alwaysOn>
         <frameName>lidar</frameName>
+        <useSimTime>true</useSimTime>
       </ros>
     </device>
 
