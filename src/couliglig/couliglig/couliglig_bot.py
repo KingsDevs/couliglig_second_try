@@ -61,8 +61,8 @@ class CouligligBot:
         self.__imu: InertialUnit = self.__robot.getDevice('inertial unit')
         self.__imu.enable(self.__timestep)
 
-        # self.__lidar: Lidar = self.__robot.getDevice('lidar')
-        # self.__lidar.enable(self.__timestep)
+        self.__lidar: Lidar = self.__robot.getDevice('lidar')
+        self.__lidar.enable(self.__timestep)
 
         rclpy.init(args=None)
         self.__node = rclpy.create_node(NODE_NAME)
@@ -72,10 +72,11 @@ class CouligligBot:
 
         self.__odom_pub = self.__node.create_publisher(Odometry, 'odom', 10)
         self.__imu_pub = self.__node.create_publisher(Imu, 'imu/data', 10)
-        # self.__lidar_pub = self.__node.create_publisher(LaserScan, 'scan', 10)
+        self.__lidar_pub = self.__node.create_publisher(LaserScan, 'scan', 10)
 
         self.__timer_period = 0.02 # 50 Hz
         self.__timer_odom = self.__node.create_timer(self.__timer_period, self.send_odom)
+        self.__timer_lidar = self.__node.create_timer(self.__timer_period, self.send_laserscan)
         # self.__timer_imu = self.__node.create_timer(self.__timer_period, self.send_imu)
 
     def __cmd_vel_callback(self, msg):
