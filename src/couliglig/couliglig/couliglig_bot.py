@@ -74,7 +74,7 @@ class CouligligBot:
         self.__imu_pub = self.__node.create_publisher(Imu, 'imu/data', 100)
         # self.__lidar_pub = self.__node.create_publisher(LaserScan, 'scan', 10)
 
-        self.__timer_period = 0.1
+        self.__timer_period = 0.02
         self.__timer_odom = self.__node.create_timer(self.__timer_period, self.send_odom)
         # self.__timer_lidar = self.__node.create_timer(self.__timer_period, self.send_laserscan)
         # self.__timer_imu = self.__node.create_timer(self.__timer_period, self.send_imu)

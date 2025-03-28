@@ -1,7 +1,7 @@
 ### ekf config file ###
 ekf_node:
     ros__parameters:
-        frequency: 20.0
+        frequency: 50.0
 
 # ekf_localization_node and ukf_localization_node both use a 3D omnidirectional motion model. If this parameter is
 # set to true, no 3D information will be used in your state estimate. Use this if you are operating in a planar
