@@ -1,13 +1,13 @@
 <?xml version="1.0" ?>
 <robot name="couliglig_bot">
   <webots>
-    <device reference="lidar" type="Lidar">
+    <device reference="LDS-01" type="Lidar">
       <ros>
         <enabled>true</enabled>
         <updateRate>50</updateRate>
         <topicName>/scan</topicName>
         <alwaysOn>true</alwaysOn>
-        <frameName>lidar</frameName>
+        <frameName>LDS-01</frameName>
         <useSimTime>true</useSimTime>
       </ros>
     </device>

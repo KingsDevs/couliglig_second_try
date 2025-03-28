@@ -37,6 +37,7 @@ Robot {
         Lidar {
           translation -0.15 0 0.18
           rotation 0 0 1 3.141592653589793
+          name "LDS-01"
           horizontalResolution 360
           fieldOfView 1.57
           numberOfLayers 1
