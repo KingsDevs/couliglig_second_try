@@ -38,6 +38,11 @@ def generate_launch_description():
     slam_params_file = os.path.join(package_dir, 'config', 'mappers_online_params.yaml')
     nav2_params_file = os.path.join(package_dir, 'config', 'nav2_params2.yaml')
 
+    print(f"Using Webots world: {fixed_wbt_path}")
+    print(f"Using robot description: {robot_description_path}")
+    print(f"Using slam params: {slam_params_file}")
+    print(f"Using nav2 params: {nav2_params_file}")
+
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
     launch_rviz = LaunchConfiguration('rviz', default=False)
     use_keyboard_control = LaunchConfiguration('use_kc', default=False)
@@ -83,7 +88,7 @@ def generate_launch_description():
                 'online_async_launch.py'
             )
         ),
-        launch_arguments={'use_sim_time': use_sim_time}.items()
+        launch_arguments={'use_sim_time': use_sim_time, 'slam_params_file': slam_params_file}.items()
     )
     
     nav2_bringup_launch = IncludeLaunchDescription(
