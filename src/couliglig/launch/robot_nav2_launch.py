@@ -2,7 +2,8 @@ import os
 import launch
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import Node, IncludeLaunchDescription
+from launch_ros.actions import Node
+from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
 from webots_ros2_driver.webots_launcher import WebotsLauncher
@@ -32,6 +33,8 @@ def generate_launch_description():
 
     original_wbt_path = os.path.join(package_dir, 'worlds', 'couliglig_bot.wbt')
     fixed_wbt_path = replace_stl_path_in_wbt(original_wbt_path, package_name)
+
+    nav2_params_file = os.path.join(package_dir, 'config', 'nav2_params2.yaml')
 
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
 
@@ -68,6 +71,17 @@ def generate_launch_description():
         parameters=[os.path.join(package_dir, 'config/ekf.yaml'), {'use_sim_time': use_sim_time}]
     )
 
+    nav2_bringup_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('nav2_bringup'),
+                'launch',
+                'navigation_launch.py'
+            )
+        ),
+        launch_arguments={'use_sim_time': use_sim_time, 'params_file': nav2_params_file}.items()
+    )
+
     slam_toolbox_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
@@ -86,6 +100,7 @@ def generate_launch_description():
         base_link_to_base_footprint,
         robot_localization_node,
         slam_toolbox_launch,
+        nav2_bringup_launch,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=webots,
