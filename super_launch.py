@@ -48,7 +48,11 @@ if __name__ == '__main__':
 
     try:
         while True:
-            pass  # Keep the script running
+            # when user press 'q' or control+c, the program will exit
+            pass
+    except SystemExit:
+        print("Exiting...")
+        terminate_processes()
     except KeyboardInterrupt:
         print("Terminating processes...")
         terminate_processes()
