@@ -20,7 +20,7 @@
     <device reference="LDS-01" type="Lidar">
       <ros>
         <enabled>true</enabled>
-        <updateRate>30</updateRate>
+        <updateRate>25</updateRate>
         <topicName>/scan</topicName>
         <alwaysOn>true</alwaysOn>
         <frameName>LDS-01</frameName>

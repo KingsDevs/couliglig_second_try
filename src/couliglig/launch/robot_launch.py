@@ -74,7 +74,7 @@ def generate_launch_description():
         couliglig_bot,
         base_link_to_lidar,
         base_link_to_base_footprint,
-        # robot_localization_node,
+        robot_localization_node,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=webots,
