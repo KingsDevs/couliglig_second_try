@@ -4,6 +4,7 @@ from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch.actions import IncludeLaunchDescription
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
 from webots_ros2_driver.webots_launcher import WebotsLauncher
@@ -37,6 +38,8 @@ def generate_launch_description():
     nav2_params_file = os.path.join(package_dir, 'config', 'nav2_params2.yaml')
 
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
+    launch_rviz = LaunchConfiguration('rviz', default=False)
+    use_keyboard_control = LaunchConfiguration('use_kc', default=False)
 
     webots = WebotsLauncher(
         world=fixed_wbt_path,
@@ -71,6 +74,17 @@ def generate_launch_description():
         parameters=[os.path.join(package_dir, 'config/ekf.yaml'), {'use_sim_time': use_sim_time}]
     )
 
+    slam_toolbox_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('slam_toolbox'),
+                'launch',
+                'online_async_launch.py'
+            )
+        ),
+        launch_arguments={'use_sim_time': use_sim_time}.items()
+    )
+    
     nav2_bringup_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
@@ -82,15 +96,12 @@ def generate_launch_description():
         launch_arguments={'use_sim_time': use_sim_time, 'params_file': nav2_params_file}.items()
     )
 
-    slam_toolbox_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory('slam_toolbox'),
-                'launch',
-                'online_async_launch.py'
-            )
-        ),
-        launch_arguments={'use_sim_time': use_sim_time}.items()
+    keyboard_controller = Node(
+        package='couliglig',
+        executable='keyboard_controller',
+        name='keyboard_controller',
+        output='screen',
+        condition=IfCondition(use_keyboard_control)
     )
 
     return LaunchDescription([
