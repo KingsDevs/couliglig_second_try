@@ -1,7 +1,8 @@
 import subprocess
-import os
-import signal
 import atexit
+import time
+import os
+from ament_index_python.packages import get_package_share_directory
 
 processes = []
 
@@ -34,11 +35,16 @@ def terminate_processes():
 if __name__ == '__main__':
     atexit.register(terminate_processes)
 
-    # Example usage
-    run_node('couliglig', 'keyboard_controller')
-    run_node('tf2_ros', 'static_transform_publisher', ['0', '0', '0.18', '0', '0', '0', 'base_link', 'LDS-01'])
-    run_launch('slam_toolbox', 'online_async_launch.py', {'use_sim_time': 'true'})
-    run_launch('nav2_bringup', 'navigation_launch.py', {'use_sim_time': 'true'})
+    use_sim_time = 'true'
+    slam_params_file = os.path.join('couliglig', 'config', 'mappers_online_params.yaml')
+    nav2_params_file = os.path.join('couliglig', 'config', 'nav2_params2.yaml')
+
+    run_launch('couliglig', 'robot_launch.py', {'use_sim_time': use_sim_time})
+    time.sleep(5)  # Wait for the Webots simulation to start
+    run_launch('slam_toolbox', 'online_async_launch.py', {'use_sim_time': use_sim_time, 'slam_params_file': slam_params_file})
+    time.sleep(5)  # Wait for the SLAM Toolbox to start
+    run_launch('nav2_bringup', 'navigation_launch.py', {'use_sim_time': use_sim_time, 'params_file': nav2_params_file})
+    run_node('couliglig', 'keyboard_controller', output='screen')
 
     try:
         while True:
