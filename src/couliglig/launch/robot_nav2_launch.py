@@ -35,6 +35,7 @@ def generate_launch_description():
     original_wbt_path = os.path.join(package_dir, 'worlds', 'couliglig_bot.wbt')
     fixed_wbt_path = replace_stl_path_in_wbt(original_wbt_path, package_name)
 
+    slam_params_file = os.path.join(package_dir, 'config', 'mappers_online_params.yaml')
     nav2_params_file = os.path.join(package_dir, 'config', 'nav2_params2.yaml')
 
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
