@@ -36,8 +36,8 @@ if __name__ == '__main__':
     atexit.register(terminate_processes)
 
     use_sim_time = 'true'
-    slam_params_file = os.path.join('couliglig', 'config', 'mappers_online_params.yaml')
-    nav2_params_file = os.path.join('couliglig', 'config', 'nav2_params2.yaml')
+    slam_params_file = os.path.join(get_package_share_directory('couliglig'), 'config', 'mappers_online_params.yaml')
+    nav2_params_file = os.path.join(get_package_share_directory('couliglig'), 'config', 'nav2_params2.yaml')
 
     run_launch('couliglig', 'robot_launch.py', {'use_sim_time': use_sim_time})
     time.sleep(5)  # Wait for the Webots simulation to start

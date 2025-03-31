@@ -48,7 +48,8 @@ class DriveCommandPublisher(Node):
                     msg.data = np.array([0.0, 0.0], dtype=np.float32).tolist()
 
                 self.publisher_.publish(msg)
-                self.get_logger().info(f'Publishing: {key}' + str(msg.data))
+                if key in ['w', 's', 'a', 'd']:
+                    self.get_logger().info(f'Publishing: {key}' + str(msg.data))
 
         except Exception as e:
             self.get_logger().info('Error: ' + str(e))

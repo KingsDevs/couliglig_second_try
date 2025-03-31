@@ -13,8 +13,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.25915005156240284 0.10897602516617626 0.9596694622182081 2.374460339857002
-  position 6.249804375023922 -5.711643314692152 5.619480827223726
+  orientation -0.23790659596559185 0.15289009818285076 0.9591793729400685 2.036789665244358
+  position 4.503551075419432 -9.007997767883497 6.729403575186052
 }
 TexturedBackground {
 }
@@ -40,7 +40,8 @@ Robot {
           name "LDS-01"
           horizontalResolution 360
           fieldOfView 1.57
-          numberOfLayers 1
+          numberOfLayers 5
+          maxRange 15
         }
         JetsonNano {
           translation -0.01 0.01 0.16
